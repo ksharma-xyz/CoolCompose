@@ -31,7 +31,9 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     ) {
                         composable<HomeRoute> {
-                            HomeScreen()
+                            HomeScreen { route ->
+                                navController.navigate(route)
+                            }
                         }
                         composable<SharedElementRoute> {
                             SharedElementScreen()

@@ -16,6 +16,5 @@ fun SharedElementScreen(modifier: Modifier = Modifier) {
         Text(
             "Shared Element"
         )
-
     }
 }
