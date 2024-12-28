@@ -18,14 +18,14 @@ data object HomeRoute
 fun HomeScreen(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
 
-        examples.forEach {
+       /* examples.forEach {
             Text(
                 text = it.serializer().descriptor.serialName,
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxSize()
             )
-        }
+        }*/
     }
 }
 
