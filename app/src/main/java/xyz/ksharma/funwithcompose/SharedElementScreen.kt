@@ -8,10 +8,15 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,7 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
@@ -47,7 +54,7 @@ fun SharedElementScreen(modifier: Modifier = Modifier) {
                 label = "basic_transition"
             ) { targetState ->
                 if (!targetState) {
-                    MainContent(
+                    DetailContents(
                         onShowDetails = {
                             showDetails = true
                         },
@@ -55,7 +62,7 @@ fun SharedElementScreen(modifier: Modifier = Modifier) {
                         sharedTransitionScope = this@SharedTransitionLayout
                     )
                 } else {
-                    DetailsContent(
+                    MainContent(
                         onBack = {
                             showDetails = false
                         },
@@ -71,7 +78,7 @@ fun SharedElementScreen(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun DetailsContent(
+fun MainContent(
     onBack: () -> Unit,
     animatedVisibilityScope: AnimatedContentScope,
     sharedTransitionScope: SharedTransitionScope,
@@ -103,6 +110,27 @@ fun DetailsContent(
                         animatedVisibilityScope = animatedVisibilityScope
                     )
                 )
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.Red, shape = CircleShape)
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState(key = "circle"),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                            ),
+
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "1",
+                            color = Color.Black
+                        )
+                    }
+                }
+
             }
         }
     }
@@ -110,7 +138,7 @@ fun DetailsContent(
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun MainContent(
+fun DetailContents(
     onShowDetails: () -> Unit,
     animatedVisibilityScope: AnimatedContentScope,
     sharedTransitionScope: SharedTransitionScope,
@@ -152,6 +180,17 @@ fun MainContent(
                     text = "Some more content here",
                     color = Color.Black
                 )
+
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    Text(
+                        text = "Platform 1",
+                        color = Color.Black,
+                        modifier = Modifier.sharedBounds(
+                            sharedContentState = rememberSharedContentState(key = "circle"),
+                            animatedVisibilityScope = animatedVisibilityScope,
+                        )
+                    )
+                }
             }
         }
     }
