@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +32,11 @@ data object SharedElementRoute
 @Composable
 fun SharedElementScreen(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize()) {
-        Text("Shared Element Transitions")
+        Text(
+            text = "Shared Element Transitions",
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.headlineSmall
+        )
 
         var showDetails by rememberSaveable {
             mutableStateOf(false)
@@ -73,7 +78,7 @@ fun DetailsContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp)
+            .padding(16.dp)
             .border(1.dp, Color.Gray.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
             .background(Color.Yellow, RoundedCornerShape(8.dp))
             .clickable {
@@ -84,15 +89,19 @@ fun DetailsContent(
         with(sharedTransitionScope) {
             Column(
                 modifier = Modifier
-                    .sharedElement(
-                        state = rememberSharedContentState(key = "myContentKey"),
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "myContentKey"),
                         animatedVisibilityScope = animatedVisibilityScope
                     )
             ) {
 
                 Text(
                     text = "Heading",
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier.sharedBounds(
+                        rememberSharedContentState(key = "title"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
                 )
             }
         }
@@ -108,7 +117,7 @@ fun MainContent(
 ) {
     Row(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .border(1.dp, Color.Gray.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
             .background(Color.LightGray, RoundedCornerShape(8.dp))
             .clickable {
@@ -119,15 +128,19 @@ fun MainContent(
         with(sharedTransitionScope) {
             Column(
                 modifier = Modifier
-                    .sharedElement(
-                        state = rememberSharedContentState(key = "myContentKey"),
-                        animatedVisibilityScope = animatedVisibilityScope
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "myContentKey"),
+                        animatedVisibilityScope = animatedVisibilityScope,
                     )
             ) {
 
                 Text(
                     text = "Heading",
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier.sharedBounds(
+                        rememberSharedContentState(key = "title"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
                 )
 
                 Text(
