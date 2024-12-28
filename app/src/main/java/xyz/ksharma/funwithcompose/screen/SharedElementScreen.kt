@@ -1,4 +1,4 @@
-package xyz.ksharma.funwithcompose
+package xyz.ksharma.funwithcompose.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope

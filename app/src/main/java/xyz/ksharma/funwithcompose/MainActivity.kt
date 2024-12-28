@@ -12,6 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import xyz.ksharma.funwithcompose.screen.HomeRoute
+import xyz.ksharma.funwithcompose.screen.HomeScreen
+import xyz.ksharma.funwithcompose.screen.SharedDetailElementRoute
+import xyz.ksharma.funwithcompose.screen.SharedDetailElementScreen
+import xyz.ksharma.funwithcompose.screen.SharedElementRoute
+import xyz.ksharma.funwithcompose.screen.SharedElementScreen
 import xyz.ksharma.funwithcompose.ui.theme.FunWithComposeTheme
 
 @AndroidEntryPoint
@@ -37,6 +43,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<SharedElementRoute> {
                             SharedElementScreen()
+                        }
+
+                        composable<SharedDetailElementRoute> {
+                            SharedDetailElementScreen()
                         }
                     }
                 }
