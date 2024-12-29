@@ -1,9 +1,7 @@
 package xyz.ksharma.funwithcompose.screen
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,23 +19,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
+import xyz.ksharma.funwithcompose.compositionlocal.LocalNavAnimatedVisibilityScope
+import xyz.ksharma.funwithcompose.compositionlocal.LocalSharedTransitionScope
 
 @Serializable
 data object SharedElementRoute
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedElementScreen(modifier: Modifier = Modifier) {
+fun SharedElementScreen(modifier: Modifier = Modifier, onHelloWorldClick: () -> Unit) {
+
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
+
     Column(modifier = modifier.fillMaxSize()) {
         Text(
             text = "Shared Element Transitions",
@@ -45,34 +47,58 @@ fun SharedElementScreen(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.headlineSmall
         )
 
-        var showDetails by rememberSaveable {
-            mutableStateOf(false)
-        }
-        SharedTransitionLayout {
-            AnimatedContent(
-                showDetails,
-                label = "basic_transition"
-            ) { targetState ->
-                if (!targetState) {
-                    DetailContents(
-                        onShowDetails = {
-                            showDetails = true
-                        },
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
-                    )
-                } else {
-                    MainContent(
-                        onBack = {
-                            showDetails = false
-                        },
-                        animatedVisibilityScope = this@AnimatedContent,
-                        sharedTransitionScope = this@SharedTransitionLayout
-                    )
+        /*
+                var showDetails by rememberSaveable {
+                    mutableStateOf(false)
                 }
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        showDetails,
+                        label = "basic_transition"
+                    ) { targetState ->
+                        if (!targetState) {
+                            DetailContents(
+                                onShowDetails = {
+                                    showDetails = true
+                                },
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout
+                            )
+                        } else {
+                            MainContent(
+                                onBack = {
+                                    showDetails = false
+                                },
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout
+                            )
+                        }
+                    }
+                }
+        */
+
+        Column(modifier = Modifier.weight(1f)) { }
+
+        with(sharedTransitionScope) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 50.dp)
+                    .padding(horizontal = 24.dp)
+                    .clickable { onHelloWorldClick() }
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState(key = "HelloKey"),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                    )
+                    .clip(RoundedCornerShape(50))
+                    .background(color = Color.Green)
+                    .padding(vertical = 8.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(text = "Hello World", color = Color.Black)
             }
         }
-
     }
 }
 
