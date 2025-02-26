@@ -15,7 +15,6 @@ jobs:
   android:
     if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
-    environment: Firebase
     timeout-minutes: 60
 
     steps:
