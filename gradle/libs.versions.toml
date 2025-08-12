@@ -11,7 +11,7 @@ composeBom = "2025.02.00"
 navigationComposeVersion = "2.8.5"
 ksp = "2.1.10-1.0.30" # ksp to kotlin version mapping https://github.com/google/ksp/releases
 hilt = "2.52"
-kotlinxSerializationJson = "1.7.3"
+kotlinxSerializationJson = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
